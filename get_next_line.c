@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 int		read_file(int fd, char	**buffer);
 char	*get_and_trim(char *buffer);
@@ -30,8 +29,7 @@ char	*get_next_line(int fd)
 		*buffer = 0;
 	}
 	read_status = READ_SUCCESS;
-	//strlen innecesario
-	if (!(is_newline(buffer, ft_strlen(buffer))))
+	if (!(is_newline(buffer, BYPASS)))
 		read_status = read_file(fd, &buffer);
 	if (read_status == READ_SUCCESS)
 	{
@@ -87,6 +85,7 @@ char	*get_and_trim(char *buffer)
 		return (NULL);
 	ft_strncpy(result, buffer, i + (buffer[i] == '\n'));
 	len = ft_strlen(buffer + i + (buffer[i] == '\n'));
+	//strlen innecsario
 	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), len);
 	return (result);
 }

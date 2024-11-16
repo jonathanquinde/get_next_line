@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/16 22:27:18 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/16 23:01:10 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ int	is_newline(char *str, size_t len)
 {
 	size_t	i;
 
+	if (len == BYPASS)
+	{
+		while (*str)
+		{
+			if (*str == '\n')
+				return (1);
+		}
+		str++;	
+		return (0);
+	}
 	i = 0;
 	while (i < len)
 	{
@@ -64,7 +74,6 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 		new_buffer[i] = (*buffer)[i];
 		i++;
 	}
-	//no muy necesario strncpy
 	ft_strncpy(&new_buffer[i], read_buffer, n_bytes);
 	free (*buffer);
 	*buffer = new_buffer;

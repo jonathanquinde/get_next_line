@@ -18,6 +18,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
+# define BYPASS 0
 # define READ_ERROR 1
 # define READ_SUCCESS 2
 // # include "test.h"
