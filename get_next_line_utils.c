@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/16 21:28:59 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:27:18 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,28 @@ int	is_newline(char *str, size_t len)
 			return (1);
 		i++;
 	}
+	return (0);
+}
+
+int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
+{
+	char	*new_buffer;
+	size_t	buffer_len;
+	size_t	i;
+
+	i = 0;
+	buffer_len = ft_strlen(*buffer);
+	new_buffer = malloc(buffer_len + n_bytes + 1);
+	if (new_buffer == NULL)
+		return (1);
+	while (i < buffer_len)
+	{
+		new_buffer[i] = (*buffer)[i];
+		i++;
+	}
+	//no muy necesario strncpy
+	ft_strncpy(&new_buffer[i], read_buffer, n_bytes);
+	free (*buffer);
+	*buffer = new_buffer;
 	return (0);
 }
