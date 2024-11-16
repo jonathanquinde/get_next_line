@@ -84,8 +84,6 @@ char	*get_and_trim(char *buffer)
 	if (result == NULL)
 		return (NULL);
 	ft_strncpy(result, buffer, i + (buffer[i] == '\n'));
-	len = ft_strlen(buffer + i + (buffer[i] == '\n'));
-	//strlen innecsario
-	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), len);
+	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), BYPASS);
 	return (result);
 }
