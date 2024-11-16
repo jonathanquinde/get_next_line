@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/05 18:08:52 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/16 21:28:59 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,4 @@ int	is_newline(char *str, size_t len)
 		i++;
 	}
 	return (0);
-}
-
-char	*empty_byte(void)
-{
-	char	*str;
-
-	str = malloc(1);
-	if (str != NULL)
-		*str = 0;
-	return (str);
 }

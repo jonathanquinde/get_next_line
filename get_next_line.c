@@ -25,9 +25,10 @@ char	*get_next_line(int fd)
 
 	if (buffer == NULL)
 	{
-		buffer = empty_byte();
+		buffer = malloc(1);
 		if (buffer == NULL)
 			return (NULL);
+		*buffer = 0;
 	}
 	read_status = READ_SUCCESS;
 	if (!(is_newline(buffer, ft_strlen(buffer))))
