@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/16 23:46:49 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:31:24 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
-	if (n = BYPASS)
+	if (n == BYPASS)
 	{
 		while (*src)
 		{
@@ -55,8 +55,8 @@ int	is_newline(char *str, size_t len)
 		{
 			if (*str == '\n')
 				return (1);
+			str++;	
 		}
-		str++;	
 		return (0);
 	}
 	i = 0;
@@ -73,7 +73,6 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 {
 	char	*new_buffer;
 	size_t	buffer_len;
-	size_t	i;
 
 	buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);

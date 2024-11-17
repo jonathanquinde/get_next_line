@@ -75,7 +75,6 @@ char	*get_and_trim(char *buffer)
 {
 	char	*result;
 	size_t	i;
-	size_t	len;
 
 	i = 0;
 	while (buffer[i] != '\n' && buffer[i])
