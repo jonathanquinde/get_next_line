@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/05 18:08:52 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/17 15:31:24 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
+	if (n == BYPASS)
+	{
+		while (*src)
+		{
+			*dest = *src;
+			dest++;
+			src++;
+		}
+		*dest = 0;
+		return ;
+	}
 	while (n > 0)
 	{
 		*dest = *src;
@@ -38,6 +49,16 @@ int	is_newline(char *str, size_t len)
 {
 	size_t	i;
 
+	if (len == BYPASS)
+	{
+		while (*str)
+		{
+			if (*str == '\n')
+				return (1);
+			str++;	
+		}
+		return (0);
+	}
 	i = 0;
 	while (i < len)
 	{
@@ -48,12 +69,18 @@ int	is_newline(char *str, size_t len)
 	return (0);
 }
 
-char	*empty_byte(void)
+int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 {
-	char	*str;
+	char	*new_buffer;
+	size_t	buffer_len;
 
-	str = malloc(1);
-	if (str != NULL)
-		*str = 0;
-	return (str);
+	buffer_len = ft_strlen(*buffer);
+	new_buffer = malloc(buffer_len + n_bytes + 1);
+	if (new_buffer == NULL)
+		return (1);
+	ft_strncpy(new_buffer, *buffer, BYPASS);
+	ft_strncpy(&new_buffer[buffer_len], read_buffer, n_bytes);
+	free (*buffer);
+	*buffer = new_buffer;
+	return (0);
 }

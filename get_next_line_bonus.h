@@ -18,6 +18,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
+# define BYPASS 0
 # define READ_ERROR 1
 # define READ_SUCCESS 2
 
@@ -25,5 +26,5 @@ char	*get_next_line(int fd);
 int		is_newline(char *read_buffer, size_t len);
 void	ft_strncpy(char *dest, char *src, size_t n);
 size_t	ft_strlen(const char *str);
-char	*empty_byte(void);
+int     join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
 #endif
