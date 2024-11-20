@@ -6,11 +6,22 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/17 15:31:24 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/20 22:33:51 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	initialize_buffer(char **buffer)
+{
+	if (*buffer == NULL)
+	{
+		*buffer = malloc(1);
+		if (*buffer == NULL)
+			return;
+		**buffer = '\0';
+	}
+}
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {

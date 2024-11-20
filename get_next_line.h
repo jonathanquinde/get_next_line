@@ -31,4 +31,5 @@ int		is_newline(char *read_buffer, size_t len);
 size_t	ft_strlen(const char *str);
 void	ft_strncpy(char *dest, char *src, size_t n);
 int		join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
+void	initialize_buffer(char **buffer);
 #endif

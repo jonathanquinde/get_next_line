@@ -21,19 +21,20 @@ char	*get_next_line(int fd)
 	int			read_status;
 	char		*result;
 
+	initialize_buffer(&buffer);
 	if (buffer == NULL)
-	{
-		buffer = malloc(1);
-		if (buffer == NULL)
-			return (NULL);
-		*buffer = 0;
-	}
+		return (NULL);
 	read_status = READ_SUCCESS;
 	if (!(is_newline(buffer, BYPASS)))
 		read_status = read_file(fd, &buffer);
-	if (read_status == READ_SUCCESS)
+	if (read_status == READ_SUCCESS || read_status == READ_LAST_LINE)
 	{
 		result = get_and_trim(buffer);
+		if (read_status == READ_LAST_LINE)
+		{
+			free (buffer);
+			buffer = NULL;
+		}
 		if (result != NULL)
 			return (result);
 	}
