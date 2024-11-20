@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/17 15:31:24 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/20 00:25:40 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-void	ft_strncpy(char *dest, char *src, size_t n)
-{
-	if (n == BYPASS)
-	{
-		while (*src)
-		{
-			*dest = *src;
-			dest++;
-			src++;
-		}
-		*dest = 0;
-		return ;
-	}
-	while (n > 0)
-	{
-		*dest = *src;
-		dest++;
-		src++;
-		n--;
-	}
-	*dest = 0;
-}
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -73,13 +50,24 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 {
 	char	*new_buffer;
 	size_t	buffer_len;
+	size_t	i;
 
 	buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
 		return (1);
-	ft_strncpy(new_buffer, *buffer, BYPASS);
-	ft_strncpy(&new_buffer[buffer_len], read_buffer, n_bytes);
+	i = 0;
+	while (i < buffer_len)
+	{
+		new_buffer[i] = (*buffer)[i];
+		i++;
+	}
+	while (i - buffer_len < n_bytes)
+	{
+		new_buffer[i] = read_buffer[i - buffer_len];
+		i++;
+	}
+	new_buffer[i] = '\0';
 	free (*buffer);
 	*buffer = new_buffer;
 	return (0);

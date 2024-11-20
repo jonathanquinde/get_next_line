@@ -16,18 +16,19 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 42
 # endif
 # define BYPASS 0
 # define READ_ERROR 1
 # define READ_SUCCESS 2
+# define READ_LAST_LINE 3
 // # include "test.h"
 
 // # define malloc(x) xmalloc(x)
 
 char	*get_next_line(int fd);
 int		is_newline(char *read_buffer, size_t len);
-void	ft_strncpy(char *dest, char *src, size_t n);
 size_t	ft_strlen(const char *str);
+void	ft_strncpy(char *dest, char *src, size_t n);
 int		join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
 #endif

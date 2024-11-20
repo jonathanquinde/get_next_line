@@ -68,7 +68,7 @@ int	read_file(int fd, char **buffer)
 	free(read_buffer);
 	if (n_bytes == -1 || **buffer == 0)
 		return (READ_ERROR);
-	return (READ_SUCCESS);
+	return (READ_LAST_LINE);
 }
 
 char	*get_and_trim(char *buffer)
