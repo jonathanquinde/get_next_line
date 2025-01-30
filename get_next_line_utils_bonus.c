@@ -6,11 +6,38 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/20 00:25:40 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/21 20:23:40 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+void	clean_node(t_list **lst)
+{
+	t_list	*node_to_free;
+
+	node_to_free = *lst;
+	*lst = (*lst)->next;
+	free (node_to_free);
+}
+
+t_list	*new_node(int fd)
+{
+	t_list	*new_node;
+
+	new_node = malloc(1 * sizeof(t_list));
+	if (new_node == NULL)
+		return (NULL);
+	new_node->file.identifier = fd;
+	new_node->file.line = malloc(1);
+	if (new_node->file.line == NULL)
+	{
+		free (new_node);
+		return (NULL);
+	}
+	*new_node->file.line = '\0';
+	return (new_node);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -26,6 +53,8 @@ int	is_newline(char *str, size_t len)
 {
 	size_t	i;
 
+	if (str == NULL)
+		return (0);
 	if (len == BYPASS)
 	{
 		while (*str)

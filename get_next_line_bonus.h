@@ -24,8 +24,20 @@
 # define READ_SUCCESS 2
 # define READ_LAST_LINE 3
 
+typedef struct s_list
+{
+    struct      s_file
+    {
+        int     identifier;
+        char    *line;
+    }           file;
+    struct s_list   *next;
+} t_list;
+
 char	*get_next_line(int fd);
 int		is_newline(char *read_buffer, size_t len);
 size_t	ft_strlen(const char *str);
 int     join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
+void	clean_node(t_list **lst);
+t_list	*new_node(int fd);
 #endif
