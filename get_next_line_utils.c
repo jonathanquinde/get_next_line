@@ -6,22 +6,11 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2025/01/30 14:44:49 by jquinde-         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:58:19 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-void	initialize_buffer(char **buffer)
-{
-	if (*buffer == NULL)
-	{
-		*buffer = malloc(1);
-		if (*buffer == NULL)
-			return;
-		**buffer = '\0';
-	}
-}
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
@@ -60,6 +49,8 @@ int	is_newline(char *str, size_t len)
 {
 	size_t	i;
 
+	if (str == NULL)
+		return (0);
 	if (len == BYPASS)
 	{
 		while (*str)
@@ -85,11 +76,15 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	char	*new_buffer;
 	size_t	buffer_len;
 
-	buffer_len = ft_strlen(*buffer);
+	if (*buffer == NULL)
+		buffer_len = 0;
+	else
+		buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
 		return (1);
-	ft_strncpy(new_buffer, *buffer, BYPASS);
+	if (*buffer != NULL)
+		ft_strncpy(new_buffer, *buffer, BYPASS);
 	ft_strncpy(new_buffer + buffer_len, read_buffer, n_bytes);
 	free (*buffer);
 	*buffer = new_buffer;

@@ -21,9 +21,6 @@ char	*get_next_line(int fd)
 	int			read_status;
 	char		*result;
 
-	initialize_buffer(&buffer);
-	if (buffer == NULL)
-		return (NULL);
 	read_status = READ_SUCCESS;
 	if (!(is_newline(buffer, BYPASS)))
 		read_status = read_file(fd, &buffer);
@@ -67,7 +64,7 @@ int	read_file(int fd, char **buffer)
 		n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	}
 	free(read_buffer);
-	if (n_bytes == -1 || **buffer == 0)
+	if (n_bytes == -1 || *buffer == NULL || **buffer == 0)
 		return (READ_ERROR);
 	return (READ_LAST_LINE);
 }
