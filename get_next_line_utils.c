@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/20 22:33:51 by jquinde-         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:44:49 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	if (new_buffer == NULL)
 		return (1);
 	ft_strncpy(new_buffer, *buffer, BYPASS);
-	ft_strncpy(&new_buffer[buffer_len], read_buffer, n_bytes);
+	ft_strncpy(new_buffer + buffer_len, read_buffer, n_bytes);
 	free (*buffer);
 	*buffer = new_buffer;
 	return (0);
