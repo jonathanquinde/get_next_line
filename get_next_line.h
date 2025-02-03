@@ -26,10 +26,17 @@
 
 // # define malloc(x) xmalloc(x)
 
+typedef struct s_list {
+    void *content;
+    struct s_list *next;
+}               t_list;
+
 char	*get_next_line(int fd);
-int		is_newline(char *read_buffer, size_t len);
+t_list *ft_lstnew(void *content);
+void ft_lstaddfront(t_list **head, t_list *node);
+size_t ft_lstsize(t_list *list);
+int		is_newline(t_list *buffer);
 size_t	ft_strlen(const char *str);
 void	ft_strncpy(char *dest, char *src, size_t n);
-int		join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
 void	initialize_buffer(char **buffer);
 #endif

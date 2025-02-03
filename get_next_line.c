@@ -12,17 +12,17 @@
 
 #include "get_next_line.h"
 
-int		read_file(int fd, char	**buffer);
-char	*get_and_trim(char *buffer);
+int		read_file(int fd, t_list **buffer);
+char	*get_and_trim(t_list *buffer);
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	t_list      *buffer;
 	int			read_status;
 	char		*result;
 
 	read_status = READ_SUCCESS;
-	if (!(is_newline(buffer, BYPASS)))
+	if (!(is_newline(buffer)))
 		read_status = read_file(fd, &buffer);
 	if (read_status == READ_SUCCESS || read_status == READ_LAST_LINE)
 	{
@@ -40,47 +40,52 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
-int	read_file(int fd, char **buffer)
+//En caso de error de malloc se deberia contemplar el fallo(si uno de los dos no falla tinene que ser liberado)
+int	read_file(int fd, t_list **buffer)
 {
-	char	*read_buffer;
+	t_list *new_node;
 	int		n_bytes;
 
-	read_buffer = malloc(BUFFER_SIZE);
-	if (read_buffer == NULL)
+	new_node = ft_lstnew(malloc(BUFFER_SIZE));	
+	if (new_node == NULL || new_node->content == NULL)
 		return (READ_ERROR);
-	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
+	n_bytes = read(fd, new_node->content, BUFFER_SIZE);
 	while (n_bytes > 0)
 	{
-		if (join_and_free(buffer, read_buffer, n_bytes))
-		{
-			free (read_buffer);
-			return (READ_ERROR);
-		}
-		if (is_newline(read_buffer, n_bytes))
-		{
-			free(read_buffer);
+		ft_lstaddfront(buffer, new_node);
+		if (is_newline(new_node))
 			return (READ_SUCCESS);
-		}
-		n_bytes = read(fd, read_buffer, BUFFER_SIZE);
+		new_node = ft_lstnew(malloc(BUFFER_SIZE));	
+		if (new_node == NULL || new_node->content == NULL)
+			return (READ_ERROR);
+		n_bytes = read(fd, new_node->content, BUFFER_SIZE);
 	}
-	free(read_buffer);
-	if (n_bytes == -1 || *buffer == NULL || **buffer == 0)
+	free (new_node->content);
+	free (new_node);
+	if (n_bytes == -1 || *buffer == NULL)
 		return (READ_ERROR);
 	return (READ_LAST_LINE);
 }
 
-char	*get_and_trim(char *buffer)
+char	*get_and_trim(t_list *buffer)
 {
+	static size_t	leftover_size = BUFFER_SIZE;
 	char	*result;
 	size_t	i;
+	size_t 	middle_size;
+	size_t	end_size;
 
+	end_size = (BUFFER_SIZE - leftover_size);
+	if (buffer->next != NULL && buffer->next->next != NULL)
+		middle_size = ((ft_lstsize(buffer) - 2) * BUFFER_SIZE);
+	else
+		middle_size = 0;
 	i = 0;
-	while (buffer[i] != '\n' && buffer[i])
+	while (((char *)buffer->content)[i] != '\n' && ((char *)buffer->content)[i])
 		i++;
-	result = malloc(i + 1 + (buffer[i] == '\n'));
+	result = malloc(end_size + middle_size + i + (((char *)buffer->content)[i] == '\n') + 1);
 	if (result == NULL)
-		return (NULL);
-	ft_strncpy(result, buffer, i + (buffer[i] == '\n'));
-	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), BYPASS);
-	return (result);
+		return (NULL);	
+	
 }
+

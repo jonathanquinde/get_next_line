@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2025/01/31 18:58:19 by jquinde-         ###   ########.fr       */
+/*   Updated: 2025/02/03 11:49:38 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,48 +45,49 @@ size_t	ft_strlen(const char *str)
 	return (str - start);
 }
 
-int	is_newline(char *str, size_t len)
+int has_newline(t_list *buffer)
 {
-	size_t	i;
+	size_t i;
 
-	if (str == NULL)
-		return (0);
-	if (len == BYPASS)
+	while (buffer != NULL)
 	{
-		while (*str)
+		i = 0;
+		while (i < BUFFER_SIZE)
 		{
-			if (*str == '\n')
+			if (((char *) buffer->content)[i] == '\n')
 				return (1);
-			str++;	
+			i++;
 		}
-		return (0);
-	}
-	i = 0;
-	while (i < len)
-	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
+		buffer = buffer->next;
 	}
 	return (0);
 }
 
-int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
+t_list *ft_lstnew(void *content)
 {
-	char	*new_buffer;
-	size_t	buffer_len;
+	t_list *node;
 
-	if (*buffer == NULL)
-		buffer_len = 0;
-	else
-		buffer_len = ft_strlen(*buffer);
-	new_buffer = malloc(buffer_len + n_bytes + 1);
-	if (new_buffer == NULL)
-		return (1);
-	if (*buffer != NULL)
-		ft_strncpy(new_buffer, *buffer, BYPASS);
-	ft_strncpy(new_buffer + buffer_len, read_buffer, n_bytes);
-	free (*buffer);
-	*buffer = new_buffer;
-	return (0);
+	node = malloc(sizeof(t_list));
+	node->next = NULL;
+	node->content = content;
+	return (node);
+}
+
+void ft_lstaddfront(t_list **head, t_list *node)
+{
+	node->next = *head;
+	*head = node;
+}
+
+size_t ft_lstsize(t_list *list)
+{
+	size_t size;
+
+	size = 0;
+	while (list != NULL)
+	{
+		size++;
+		list = list->next;
+	}
+	return (size);	
 }
