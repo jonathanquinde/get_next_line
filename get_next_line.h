@@ -26,10 +26,10 @@
 # define READ_EOF 0
 
 char	*ft_strdup(const char *str);
-ssize_t	ft_strlenuntil(char *str, char ch);
+char	*ft_strchr(const char *str, int c);
 char	*ft_strcpy(char *dst, const char *src);
 size_t	ft_strlen(const char *str);
-int		ft_strcontains_ch(char	*str, char ch);
+void	ft_strclean(char **str);
 char	*get_next_line(int fd);
 
 #endif

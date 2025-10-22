@@ -12,15 +12,29 @@
 
 #include "get_next_line.h"
 
+char	*ft_strncpy(char *dst, char *src, size_t len)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < len)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = 0;
+	return (dst);
+}
+
 void	ft_strappend(char **str, char *value)
 {
 	size_t	len_new;
 	size_t	len_str;
 	char	*new_str;
 
-	if (*value == '\0')
+	if (value == NULL)
 		return ;
-	else if (**str == '\0')
+	else if (*str == NULL)
 	{
 		*str = ft_strdup(value);
 		return ;
@@ -28,10 +42,9 @@ void	ft_strappend(char **str, char *value)
 	len_str = ft_strlen(*str);
 	len_new = len_str + ft_strlen(value);
 	new_str = malloc(len_new + 1);
-	if (str == NULL)
+	if (new_str == NULL)
 	{
-		free (*str);
-		*str = NULL;
+		ft_strclean(str);
 		return ;
 	}
 	ft_strcpy(new_str, *str);
@@ -40,57 +53,55 @@ void	ft_strappend(char **str, char *value)
 	*str = new_str;
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+void	extract_line_truncate_buffer(char **line, char **buffer)
 {
-	size_t		i;
-	char		*sub;
+	char	*ptr_nl;	
+	char	*new_buffer;
 
-	if (len == 0)
-		return (ft_strdup(""));
-	sub = malloc(len + 1);
-	if (sub == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	ptr_nl = ft_strchr(*buffer, '\n');
+	if (ptr_nl[1] == '\0')
 	{
-		sub[i] = s[start + i];
-		i++;
+		*line = *buffer;
+		*buffer = NULL;
+		return ;
 	}
-	sub[i] = '\0';
-	return (sub);
-}
-
-void	ft_strtruncate_until(char **str, size_t index)
-{
-	char	*new_str;
-
-	new_str = ft_strdup(*str + index);
-	free (*str);
-	*str = new_str;
+	*line = malloc(ptr_nl - *buffer + 2);
+	if (*line == NULL)
+	{
+		ft_strclean(buffer);
+		return ;
+	}
+	ft_strncpy(*line, *buffer, ptr_nl - *buffer + 1);
+	new_buffer = ft_strdup(ptr_nl + 1);
+	free (*buffer);
+	*buffer = new_buffer;
+	if (new_buffer == NULL)
+		ft_strclean(line);
 }
 
 int read_file_until_nl_eof(int fd, char **buffer)
 {
-	char		buffer_read[BUFFER_SIZE + 1];
-	ssize_t		bytes_read;
+	char	*buffer_read;
+	ssize_t	bytes_read;
 
-	if (*buffer == NULL)
-		*buffer = ft_strdup("");
-	if (ft_strcontains_ch(*buffer, '\n'))
+	if (*buffer != NULL && ft_strchr(*buffer, '\n'))
 		return (READ_NL); 
+	buffer_read = malloc(BUFFER_SIZE + 1);
+	if (buffer_read == NULL)
+		return (READ_ERROR);
 	while (1)
 	{
 		bytes_read = read(fd, buffer_read, BUFFER_SIZE);
 		if (bytes_read == -1)
-			return (READ_ERROR);
-		else if (bytes_read == 0)
-			return (READ_EOF);
+			return (free(buffer_read), READ_ERROR);
+		if (bytes_read == 0)
+			return (free(buffer_read), READ_EOF);
 		buffer_read[bytes_read] = '\0';
 		ft_strappend(buffer, buffer_read);
 		if (*buffer == NULL)
-			return (READ_ERROR);
-		if (ft_strcontains_ch(buffer_read, '\n'))
-			return (READ_NL);
+			return (free(buffer_read), READ_ERROR);
+		if (ft_strchr(buffer_read, '\n'))
+			return (free(buffer_read), READ_NL);
 	}
 }
 
@@ -98,36 +109,18 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
-	size_t		len_line;
-	int			read_status;
+	int		read_status;
 
+	line = NULL;
 	read_status = read_file_until_nl_eof(fd, &buffer);
 	if (read_status == READ_NL)
+		extract_line_truncate_buffer(&line, &buffer);
+	else if (read_status == READ_EOF)
 	{
-		len_line = ft_strlenuntil(buffer, '\n') + 1;
-		line = ft_substr(buffer, 0, len_line);
-		if (line != NULL)
-		{
-			free (buffer);
-			buffer = NULL;
-			return (line);
-		}
-		ft_strtruncate_until(&buffer, len_line);
-		if (buffer == NULL)
-		{
-			free (line);
-			free (buffer);
-			buffer = NULL;
-			return (line);
-		}
-	}
-	else if (read_status == READ_EOF && buffer != NULL && *buffer != '\0')
 		line = buffer;
-	else
-	{
-		free (buffer);
 		buffer = NULL;
-		line = NULL;
 	}
+	else if (read_status == READ_ERROR)
+		ft_strclean(&buffer);
 	return (line);
 }

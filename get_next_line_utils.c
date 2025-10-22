@@ -12,15 +12,10 @@
 
 #include "get_next_line.h"
 
-int	ft_strcontains_ch(char	*str, char ch)
+void	ft_strclean(char **str)
 {
-	while (*str)
-	{
-		if (*str == ch)
-			return (1);
-		str++;
-	}
-	return (0);
+	free(*str);
+	*str = NULL;
 }
 
 size_t	ft_strlen(const char *str)
@@ -47,6 +42,18 @@ char	*ft_strcpy(char *dst, const char *src)
 	return (dst);
 }
 
+/*
+int	ft_strcontains_ch(char	*str, char ch)
+{
+	while (*str)
+	{
+		if (*str == ch)
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
 ssize_t	ft_strlenuntil(char *str, char ch)
 {
 	size_t	len;
@@ -59,6 +66,20 @@ ssize_t	ft_strlenuntil(char *str, char ch)
 		len++;
 	}
 	return (-1);
+}
+ * */
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s)
+	{
+		if (*s == (unsigned char) c)
+			return ((char *) s);
+		s++;
+	}
+	if ((unsigned char)c == '\0')
+		return ((char *) s);
+	return (NULL);
 }
 
 char	*ft_strdup(const char *str)
