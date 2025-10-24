@@ -79,13 +79,13 @@ void	extract_line_truncate_buffer(char **line, char **buffer)
 		ft_strclean(line);
 }
 
-int read_file_until_nl_eof(int fd, char **buffer)
+int	read_file_until_nl_eof(int fd, char **buffer)
 {
 	char	*buffer_read;
 	ssize_t	bytes_read;
 
 	if (*buffer != NULL && ft_strchr(*buffer, '\n'))
-		return (READ_NL); 
+		return (READ_NL);
 	buffer_read = malloc(BUFFER_SIZE + 1);
 	if (buffer_read == NULL)
 		return (READ_ERROR);
@@ -109,7 +109,7 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
-	int		read_status;
+	int			read_status;
 
 	line = NULL;
 	read_status = read_file_until_nl_eof(fd, &buffer);
